@@ -2,13 +2,17 @@
   "name": "licop",
   "version": "0.0.1",
   "type": "module",
-  "description": "",
-  "main": "index.js",
+  "description": "License Cop CLI for scanning dependency license risk",
+  "main": "./dist/bin/licop.ts",
+  "bin": {
+    "licop": "./dist/bin/licop.js"
+  },
   "scripts": {
-    "start": "node bin/licop.js",
+    "start": "node dist/bin/licop.js",
     "build": "tsc",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest",
+    "coverage": "vitest --coverage",
+    "licop": "licop"
   },
   "sideEffects": false,
   "keywords": [],
