@@ -1,8 +1,31 @@
 # licop
 
-`licop` will scan your project's `node_modules` directory for installed dependencies, read their `package.json` files to extract license information, and classify each dependency into one of four risk levels: `safe`, `warning`, `danger`, or `unknown`.
+> A modern CLI for auditing dependency licenses and enforcing license risk in CI.
 
-This is important because some open source licenses may have legal implications for your project, especially if you plan to distribute it commercially or as closed-source software. By using `licop`, you can quickly identify any potential licensing issues in your dependencies and take appropriate action, such as replacing a risky dependency with a safer alternative or seeking legal advice.
+`licop` scans your project's `node_modules` directory, reads installed `package.json` files, extracts license metadata, and classifies each dependency into one of four risk levels:
+
+- `safe`
+- `warning`
+- `danger`
+- `unknown`
+
+This helps you identify potential licensing risks before shipping your software — especially important for commercial, proprietary, or distributed projects.
+
+## Installation
+
+```bash
+pnpm add -D licop
+# or
+npm install --save-dev licop
+# or
+yarn add -D licop
+```
+
+## Usage
+
+```bash
+npx licop
+```
 
 ## Example Output
 
@@ -21,6 +44,10 @@ lodash             4.17.21   MIT             safe
 
 ### with `--json`
 
+```bash
+npx licop --json
+```
+
 ```json
 {
   "safe": [
@@ -37,6 +64,18 @@ lodash             4.17.21   MIT             safe
   "unknown": []
 }
 ```
+
+### with `--csv`
+
+```bash
+npx licop --csv
+```
+
+Generates a machine-readable CSV report including repository metadata.
+
+## Exit codes (CI enforcement)
+- `0`: No `danger` dependencies found.
+- `1`: At least one `danger` dependency detected.
 
 ## Risk Levels
 

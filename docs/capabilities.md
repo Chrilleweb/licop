@@ -1,19 +1,48 @@
-# CLI flags
+# CLI Flags
 
 ### `--json`
 
-This will output the table in json format and also include the repository of the package if it exists. 
+Outputs the full license report as structured JSON.
+
+- Includes all risk categories (`safe`, `warning`, `danger`, `unknown`)
+- Includes repository information when available
+- Suitable for scripting and CI integrations
+
+---
 
 ### `--csv`
 
-This will output the table in csv format and also include the repository of the package if it exists.
+Outputs the license report in CSV format.
+
+Columns:
+
+- `Package`
+- `Version`
+- `License`
+- `Repository`
+- `Risk`
+
+Ideal for compliance reviews, spreadsheets, and audit exports.
+
+---
+
+## Default Output
+
+Without any flags, licop prints a formatted terminal table showing:
+
+- Package name
+- Version
+- License
+- Risk level
+
+---
 
 ## Programmatic API
 
 The three license classification lists are exported from the package entry point so you can import them directly into your own tooling or scripts:
 
 ```ts
-export { SAFE_LICENSES, WARNING_LICENSES, DANGER_LICENSES } from "./risk.js";
+import { SAFE_LICENSES, WARNING_LICENSES, DANGER_LICENSES } from "licop";
 ```
 
 | Export | Type | Description |
