@@ -4,6 +4,8 @@ import { scanDependencies } from "../scanner.js";
 
 /**
  * Runs the CLI scan process and sets an appropriate process exit code.
+ *
+ * @returns A promise that resolves when the scan is complete.
  */
 export async function run(): Promise<void> {
   const spinner = ora("Scanning node_modules for license metadata...").start();

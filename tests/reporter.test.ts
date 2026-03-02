@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import type { Package } from "../src/index.js";
+import type { Package } from "../src/config/types.js";
 import { generateReport, printReport } from "../src/reporter.js";
 
 describe("generateReport", () => {

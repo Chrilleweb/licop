@@ -1,4 +1,4 @@
-import type { Package, RiskLevel } from "./index.js";
+import type { Package, RiskLevel } from "./config/types.js";
 
 const SAFE_LICENSES = [
   "MIT",

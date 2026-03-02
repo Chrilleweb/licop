@@ -1,6 +1,6 @@
 import chalk from "chalk";
 
-import type { GroupedReport, Package, PackageWithRisk } from "./index.js";
+import type { GroupedReport, Package, PackageWithRisk } from "./config/types.js";
 import { getRisk } from "./risk.js";
 
 /**

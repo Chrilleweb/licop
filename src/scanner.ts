@@ -1,7 +1,7 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
-import type { Package } from "./index.js";
+import type { Package } from "./config/types.js";
 
 /**
  * Scans the current working directory's `node_modules` and returns package metadata.
