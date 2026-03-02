@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { Package } from "../src/config/types.js";
-import { generateReport, printReport } from "../src/reporter.js";
+import { generateReport, formatJsonReport, printReport } from "../src/reporter.js";
 
 describe("generateReport", () => {
   it("returns an empty grouped report when no packages given", () => {
@@ -206,5 +206,51 @@ describe("printReport", () => {
     // Only headers and dividers — no package rows
     expect(output).not.toContain("safe");
     expect(output).not.toContain("danger");
+  });
+});
+
+describe("formatJsonReport", () => {
+  it("returns valid JSON", () => {
+    const grouped = generateReport([]);
+    expect(() => JSON.parse(formatJsonReport(grouped))).not.toThrow();
+  });
+
+  it("includes all four risk groups in the output", () => {
+    const grouped = generateReport([]);
+    const parsed = JSON.parse(formatJsonReport(grouped)) as Record<string, unknown>;
+    expect(parsed).toHaveProperty("safe");
+    expect(parsed).toHaveProperty("warning");
+    expect(parsed).toHaveProperty("danger");
+    expect(parsed).toHaveProperty("unknown");
+  });
+
+  it("places a danger package in the danger group", () => {
+    const packages: Package[] = [
+      { name: "gpl-lib", version: "1.0.0", license: "GPL-3.0", repository: null },
+    ];
+    const grouped = generateReport(packages);
+    const parsed = JSON.parse(formatJsonReport(grouped)) as {
+      danger: Array<{ name: string }>;
+    };
+    expect(parsed.danger).toHaveLength(1);
+    expect(parsed.danger[0].name).toBe("gpl-lib");
+  });
+
+  it("places a safe package in the safe group", () => {
+    const packages: Package[] = [
+      { name: "chalk", version: "5.3.0", license: "MIT", repository: null },
+    ];
+    const grouped = generateReport(packages);
+    const parsed = JSON.parse(formatJsonReport(grouped)) as {
+      safe: Array<{ name: string }>;
+    };
+    expect(parsed.safe).toHaveLength(1);
+    expect(parsed.safe[0].name).toBe("chalk");
+  });
+
+  it("outputs pretty-printed JSON (2-space indent)", () => {
+    const grouped = generateReport([]);
+    const json = formatJsonReport(grouped);
+    expect(json).toContain("\n  ");
   });
 });

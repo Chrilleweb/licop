@@ -1,6 +1,6 @@
 import type { Package, RiskLevel } from "./config/types.js";
 
-const SAFE_LICENSES = [
+export const SAFE_LICENSES = [
   "MIT",
   "ISC",
   "APACHE-2.0",
@@ -10,9 +10,9 @@ const SAFE_LICENSES = [
   "CC0-1.0",
 ];
 
-const WARNING_LICENSES = ["LGPL-2.1", "LGPL-3.0", "MPL-2.0", "EPL-2.0"];
+export const WARNING_LICENSES = ["LGPL-2.1", "LGPL-3.0", "MPL-2.0", "EPL-2.0"];
 
-const DANGER_LICENSES = ["GPL-2.0", "GPL-3.0", "AGPL-3.0", "SSPL-1.0"];
+export const DANGER_LICENSES = ["GPL-2.0", "GPL-3.0", "AGPL-3.0", "SSPL-1.0"];
 
 /**
  * Computes a risk level from package license metadata.

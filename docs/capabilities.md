@@ -53,7 +53,11 @@ licop supports common license field formats from package manifests:
 
 - Prints a table report with `Package`, `Version`, `License`, and `Risk` columns.
 - Uses colorized risk labels in terminal output.
-- Returns exit code `1` when at least one dependency is classified as `danger`.
+- Pass `--json` to emit the full grouped report as a JSON object to `stdout` instead
+  of the table. All four risk groups (`safe`, `warning`, `danger`, `unknown`) are
+  included so downstream scripts can filter as needed.
+- Returns exit code `1` when at least one dependency is classified as `danger`,
+  regardless of whether `--json` is active.
 - Returns exit code `0` when no `danger` dependencies are found.
 
 This makes licop suitable for local checks and CI pipeline enforcement.

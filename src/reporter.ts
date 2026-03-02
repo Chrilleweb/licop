@@ -30,6 +30,19 @@ export function generateReport(packages: Package[]): GroupedReport {
 }
 
 /**
+ * Serializes the full grouped report to a formatted JSON string.
+ *
+ * Outputs all four risk groups so callers (e.g. CI scripts) can process the
+ * complete result set rather than a human-filtered subset.
+ *
+ * @param grouped Grouped risk report from {@link generateReport}.
+ * @returns Formatted JSON string ready for `console.log`.
+ */
+export function formatJsonReport(grouped: GroupedReport): string {
+  return JSON.stringify(grouped, null, 2);
+}
+
+/**
  * Prints a color-coded license table report to standard output.
  *
  * The report includes all scanned packages in a compact tabular layout with

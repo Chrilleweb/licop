@@ -4,6 +4,13 @@
 export type RiskLevel = "safe" | "warning" | "danger" | "unknown";
 
 /**
+ * Configuration and type definitions for the license risk analysis tool.
+ */
+export interface RawOptions {
+  json: boolean;
+}
+
+/**
  * Represents the subset of package metadata needed for license risk analysis.
  */
 export interface Package {
