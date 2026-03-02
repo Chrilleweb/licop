@@ -12,6 +12,7 @@
     "build": "tsc",
     "test": "vitest",
     "coverage": "vitest --coverage",
+    "lint": "eslint ./src --ext .ts",
     "licop": "licop"
   },
   "sideEffects": false,
@@ -22,6 +23,9 @@
     "@types/node": "^25.3.0",
     "@vitest/coverage-v8": "^4.0.18",
     "typescript": "^5.9.3",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "eslint": "^9.39.3",
     "vitest": "^4.0.18"
   },
   "dependencies": {
