@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { Package } from "../src/index.js";
+import type { Package } from "../src/config/types.js";
 import { getRisk } from "../src/risk.js";
 
 describe("getRisk", () => {
@@ -108,5 +108,13 @@ describe("getRisk", () => {
 
   it("handles SPDX AND expressions (both safe → safe)", () => {
     expect(getRisk("MIT AND Apache-2.0")).toBe("safe");
+  });
+
+  it("returns unknown for array with non-string entries", () => {
+    expect(getRisk([123 as unknown as string])).toBe("unknown");
+  });
+
+  it("returns unknown for object license where type is not a string", () => {
+    expect(getRisk({ type: 123 } as unknown as Package["license"])).toBe("unknown");
   });
 });

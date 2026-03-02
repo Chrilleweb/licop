@@ -289,4 +289,45 @@ describe("scanDependencies", () => {
 
     expect(await scanDependencies()).toEqual([]);
   });
+
+  it("skips package when package.json content is not a plain object", async () => {
+    vi.mocked(readdir).mockResolvedValue(["pkg"] as never);
+    vi.mocked(stat).mockResolvedValue(mockDir(true) as never);
+    // JSON.parse("42") yields a number, which fails isRecord check
+    vi.mocked(readFile).mockResolvedValue(JSON.stringify(42) as never);
+
+    expect(await scanDependencies()).toEqual([]);
+  });
+
+  it("returns null repository when repository object has no url field", async () => {
+    vi.mocked(readdir).mockResolvedValue(["pkg"] as never);
+    vi.mocked(stat).mockResolvedValue(mockDir(true) as never);
+    vi.mocked(readFile).mockResolvedValue(
+      JSON.stringify({
+        name: "pkg",
+        version: "1.0.0",
+        license: "MIT",
+        repository: { type: "git" }, // valid object but no url field
+      }) as never,
+    );
+
+    const result = await scanDependencies();
+    expect(result[0].repository).toBeNull();
+  });
+
+  it("returns null license when legacy licenses entries are unrecognized objects", async () => {
+    vi.mocked(readdir).mockResolvedValue(["pkg"] as never);
+    vi.mocked(stat).mockResolvedValue(mockDir(true) as never);
+    vi.mocked(readFile).mockResolvedValue(
+      JSON.stringify({
+        name: "pkg",
+        version: "1.0.0",
+        // object entries with no type field → all map to null → filtered → empty → null
+        licenses: [{ url: "https://example.com" }],
+      }) as never,
+    );
+
+    const result = await scanDependencies();
+    expect(result[0].license).toBeNull();
+  });
 });

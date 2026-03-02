@@ -259,6 +259,45 @@ describe("formatCsvReport", () => {
   it("returns a CSV string with headers", () => {
     const grouped = generateReport([]);
     const csv = formatCsvReport(grouped);
-    expect(csv).toContain("Package,Version,License,Risk");
+    expect(csv).toContain("Package,Version,License,Repository,Risk");
+  });
+
+  it("renders one data row per package", () => {
+    const packages: Package[] = [
+      { name: "chalk", version: "5.0.0", license: "MIT", repository: null },
+    ];
+    const grouped = generateReport(packages);
+    const lines = formatCsvReport(grouped).split("\n");
+    expect(lines).toHaveLength(2);
+    expect(lines[1]).toContain("chalk");
+  });
+
+  it("outputs empty string for repository when null", () => {
+    const packages: Package[] = [
+      { name: "pkg", version: "1.0.0", license: "MIT", repository: null },
+    ];
+    const grouped = generateReport(packages);
+    const dataLine = formatCsvReport(grouped).split("\n")[1];
+    expect(dataLine).toBe("pkg,1.0.0,MIT,,safe");
+  });
+
+  it("includes repository URL when present", () => {
+    const packages: Package[] = [
+      { name: "chalk", version: "5.0.0", license: "MIT", repository: "https://github.com/chalk/chalk" },
+    ];
+    const grouped = generateReport(packages);
+    const csv = formatCsvReport(grouped);
+    expect(csv).toContain("https://github.com/chalk/chalk");
+  });
+
+  it("sorts rows alphabetically by package name", () => {
+    const packages: Package[] = [
+      { name: "zlib", version: "1.2.0", license: "MIT", repository: null },
+      { name: "acorn", version: "8.0.0", license: "MIT", repository: null },
+    ];
+    const grouped = generateReport(packages);
+    const lines = formatCsvReport(grouped).split("\n");
+    expect(lines[1]).toMatch(/^acorn,/);
+    expect(lines[2]).toMatch(/^zlib,/);
   });
 });
