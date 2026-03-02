@@ -1,6 +1,6 @@
 # licop
 
-licop (License Cop) is a TypeScript CLI for scanning dependency licenses and reporting risk across a project's `node_modules`.
+`licop` will scan your project's `node_modules` directory for installed dependencies, read their `package.json` files to extract license information, and classify each dependency into one of four risk levels: `safe`, `warning`, `danger`, or `unknown`.
 
 ## Example Output
 
@@ -17,23 +17,58 @@ lodash             4.17.21   MIT             safe
 ────────────────────────────────────────────────────────
 ```
 
-## CI Behavior
+### with `--json`
 
-- Exit code `1` when one or more dependencies are classified as `danger`.
-- Exit code `0` when no `danger` licenses are detected.
+```json
+{
+  "safe": [
+    {
+      "name": "vitest",
+      "version": "4.0.18",
+      "license": "MIT",
+      "repository": "git+https://github.com/vitest-dev/vitest.git",
+      "risk": "safe"
+    }
+  ],
+  "warning": [],
+  "danger": [],
+  "unknown": []
+}
+```
+
+## Risk Levels
+
+### safe
+
+- MIT
+- ISC
+- Apache-2.0
+- BSD-2-Clause
+- BSD-3-Clause
+- Unlicense
+- CC0-1.0
+
+### warning
+
+- LGPL-2.1
+- LGPL-3.0
+- MPL-2.0
+- EPL-2.0
+
+### danger
+
+- GPL-2.0
+- GPL-3.0
+- AGPL-3.0
+- SSPL-1.0
+
+### unknown
+
+- Any unrecognized or missing license value.
 
 ## Documentation
 
-- [Documentation Index](docs/index.md)
-- [Capabilities](docs/capabilities.md)
-
-## Tech Stack
-
-- TypeScript (ESM)
-- Node.js
-- chalk (terminal colors)
-- ora (spinner)
-- vitest (tests)
+→ See [Capabilities](docs/capabilities.md) for full documentation.
 
 ## Feedback & contributions
 

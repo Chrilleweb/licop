@@ -1,23 +1,40 @@
 # licop Capabilities
 
-licop is a TypeScript CLI that scans dependencies in `node_modules` and reports license risk.
+`licop` will scan your project's `node_modules` directory for installed dependencies, read their `package.json` files to extract license information, and classify each dependency into one of four risk levels: `safe`, `warning`, `danger`, or `unknown`.
 
-## What licop Scans
+## Example Output
 
-- Reads package metadata from each dependency in the local `node_modules` directory.
-- Supports scoped packages, for example `@types/node`.
-- Handles `pnpm` symlink-based layouts by resolving package directories safely.
-- Skips hidden folders and gracefully ignores missing or malformed `package.json` files.
+licop prints a clear terminal table like this:
 
-## License Input Formats
+```text
+License Report
+────────────────────────────────────────────────────────
+Package            Version   License         Risk
+────────────────────────────────────────────────────────
+chalk              5.3.0     MIT             safe
+typescript         5.4.2     Apache-2.0      safe
+lodash             4.17.21   MIT             safe
+────────────────────────────────────────────────────────
+```
 
-licop supports common license field formats from package manifests:
+### with `--json`
 
-- SPDX string, for example `MIT`
-- SPDX expression, for example `(MIT OR Apache-2.0)`
-- Object format, for example `{ "type": "MIT" }`
-- Array format, for example `["MIT", "Apache-2.0"]`
-- Missing or unknown values
+```json
+{
+  "safe": [
+    {
+      "name": "vitest",
+      "version": "4.0.18",
+      "license": "MIT",
+      "repository": "git+https://github.com/vitest-dev/vitest.git",
+      "risk": "safe"
+    }
+  ],
+  "warning": [],
+  "danger": [],
+  "unknown": []
+}
+```
 
 ## Risk Levels
 
@@ -49,15 +66,19 @@ licop supports common license field formats from package manifests:
 
 - Any unrecognized or missing license value.
 
+## CI flags
+
+### `--json`
+
+This will output the table in json format and also include the repository of the package if it exists. 
+
+
 ## Output and CI Behavior
 
-- Prints a table report with `Package`, `Version`, `License`, and `Risk` columns.
-- Uses colorized risk labels in terminal output.
-- Pass `--json` to emit the full grouped report as a JSON object to `stdout` instead
-  of the table. All four risk groups (`safe`, `warning`, `danger`, `unknown`) are
-  included so downstream scripts can filter as needed.
 - Returns exit code `1` when at least one dependency is classified as `danger`,
   regardless of whether `--json` is active.
 - Returns exit code `0` when no `danger` dependencies are found.
 
 This makes licop suitable for local checks and CI pipeline enforcement.
+
+
