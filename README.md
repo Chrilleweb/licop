@@ -2,10 +2,6 @@
 
 licop (License Cop) is a TypeScript CLI for scanning dependency licenses and reporting risk across a project's `node_modules`.
 
-## Purpose
-
-licop helps teams quickly identify license risk in dependencies and enforce policy in CI.
-
 ## Example Output
 
 licop prints a clear terminal table like this:
