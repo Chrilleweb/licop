@@ -2,6 +2,10 @@
 
 > A modern CLI for auditing dependency licenses and enforcing license risk in CI.
 
+[![License](https://img.shields.io/npm/l/licop.svg)](https://www.npmjs.com/package/licop)
+[![npm version](https://img.shields.io/npm/v/licop.svg)](https://www.npmjs.com/package/licop)
+[![npm downloads](https://img.shields.io/npm/dt/licop.svg)](https://www.npmjs.com/package/licop)
+
 `licop` scans your project's `node_modules` directory, reads installed `package.json` files, extracts license metadata, and classifies each dependency into one of four risk levels:
 
 - `safe`
