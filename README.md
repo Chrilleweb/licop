@@ -42,6 +42,6 @@ Issues and pull requests are welcome.
 
 ## License
 
-Licensed under the [AGPL-3.0](LICENSE) license.
+Licensed under the [Apache-2.0](LICENSE) license.
 
 Created by [chrilleweb](https://github.com/chrilleweb)
