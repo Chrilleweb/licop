@@ -2,36 +2,81 @@
   "name": "licop",
   "version": "0.0.1",
   "type": "module",
-  "description": "License Cop CLI for scanning dependency license risk",
-  "main": "./dist/bin/licop.ts",
+  "description": "Scan npm dependencies for risky licenses",
   "bin": {
-    "licop": "./dist/bin/licop.js"
+    "licop": "dist/bin/licop.js"
   },
-  "scripts": {
-    "start": "node dist/bin/licop.js",
-    "build": "tsc",
-    "test": "vitest",
-    "coverage": "vitest --coverage",
-    "lint": "eslint ./src --ext .ts",
-    "licop": "licop"
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
+  "files": [
+    "dist/",
+    "docs/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "sideEffects": false,
-  "keywords": [],
+  "scripts": {
+    "build": "tsc",
+    "dev": "vitest --watch",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "release": "release-it",
+    "release:dry": "release-it --dry-run",
+    "lint": "eslint ./src --ext .ts",
+    "start": "node dist/bin/licop.js",
+    "licop": "licop",
+    "prepublishOnly": "npm run lint && npm test && npm run build"
+  },
+  "keywords": [
+    "license",
+    "cli",
+    "npm",
+    "dependencies",
+    "scanner",
+    "audit",
+    "risk",
+    "compliance",
+    "open-source"
+  ],
   "author": "Chrilleweb",
   "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chrilleweb/licop.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/Chrilleweb/licop#readme",
+  "bugs": {
+    "url": "https://github.com/Chrilleweb/licop/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.5",
-    "@types/node": "^25.3.0",
-    "@vitest/coverage-v8": "^4.0.18",
-    "typescript": "^5.9.3",
+    "@types/node": "^25.3.3",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
-    "release-it": "^19.2.4",
     "@typescript-eslint/parser": "^8.56.1",
+    "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^9.39.3",
+    "release-it": "^19.2.4",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
   "dependencies": {
     "chalk": "^5.6.2",
     "ora": "^9.3.0"
-  }
+  },
+  "packageManager": "pnpm@10.30.3"
 }
