@@ -40,6 +40,9 @@ lodash             4.17.21   MIT             safe
 
 ### safe
 
+Permissive licenses with minimal restrictions.  
+Generally safe for commercial and closed-source use.
+
 - MIT
 - ISC
 - Apache-2.0
@@ -50,6 +53,10 @@ lodash             4.17.21   MIT             safe
 
 ### warning
 
+Weak copyleft or conditional licenses.  
+May impose requirements such as source disclosure of modifications.  
+Legal review recommended before production use.
+
 - LGPL-2.1
 - LGPL-3.0
 - MPL-2.0
@@ -57,12 +64,18 @@ lodash             4.17.21   MIT             safe
 
 ### danger
 
+Strong copyleft licenses.  
+May require open-sourcing your entire project if you distribute it.
+
 - GPL-2.0
 - GPL-3.0
 - AGPL-3.0
 - SSPL-1.0
 
 ### unknown
+
+Licenses that are unrecognized or missing.  
+Use caution and consider legal review before use.
 
 - Any unrecognized or missing license value.
 

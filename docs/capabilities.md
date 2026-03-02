@@ -40,6 +40,9 @@ lodash             4.17.21   MIT             safe
 
 ### safe
 
+Permissive licenses with minimal restrictions.  
+Generally safe for commercial and closed-source use.
+
 - MIT
 - ISC
 - Apache-2.0
@@ -50,6 +53,10 @@ lodash             4.17.21   MIT             safe
 
 ### warning
 
+Weak copyleft or conditional licenses.  
+May impose requirements such as source disclosure of modifications.  
+Legal review recommended before production use.
+
 - LGPL-2.1
 - LGPL-3.0
 - MPL-2.0
@@ -57,12 +64,18 @@ lodash             4.17.21   MIT             safe
 
 ### danger
 
+Strong copyleft licenses.  
+May require open-sourcing your entire project if you distribute it.
+
 - GPL-2.0
 - GPL-3.0
 - AGPL-3.0
 - SSPL-1.0
 
 ### unknown
+
+Licenses that are unrecognized or missing.  
+Use caution and consider legal review before use.
 
 - Any unrecognized or missing license value.
 
@@ -75,6 +88,24 @@ This will output the table in json format and also include the repository of the
 ### `--csv`
 
 This will output the table in csv format and also include the repository of the package if it exists.
+
+## Programmatic API
+
+The three license classification lists are exported from the package entry point so you can import them directly into your own tooling or scripts:
+
+```ts
+import {
+  SAFE_LICENSES,
+  WARNING_LICENSES,
+  DANGER_LICENSES,
+} from "licop";
+```
+
+| Export | Type | Description |
+|---|---|---|
+| `SAFE_LICENSES` | `string[]` | SPDX identifiers classified as safe (e.g. `"MIT"`, `"Apache-2.0"`) |
+| `WARNING_LICENSES` | `string[]` | SPDX identifiers that trigger a warning (e.g. `"LGPL-3.0"`, `"MPL-2.0"`) |
+| `DANGER_LICENSES` | `string[]` | SPDX identifiers classified as dangerous (e.g. `"GPL-3.0"`, `"AGPL-3.0"`) |
 
 ## Output and CI Behavior
 
