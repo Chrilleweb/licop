@@ -1,4 +1,4 @@
-import type { RawOptions } from "./types.js";
+import type { RawOptions } from './types.js';
 
 /**
  * Parses raw CLI options into structured configuration.
@@ -20,5 +20,5 @@ export function parseOptions(args: Partial<RawOptions>): RawOptions {
  * @returns The boolean representation.
  */
 function toBool(value: unknown): boolean {
-  return value === true || value === "true";
+  return value === true || value === 'true';
 }

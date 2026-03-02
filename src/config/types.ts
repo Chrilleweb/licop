@@ -1,7 +1,7 @@
 /**
  * Represents the computed license risk for a dependency package.
  */
-export type RiskLevel = "safe" | "warning" | "danger" | "unknown";
+export type RiskLevel = 'safe' | 'warning' | 'danger' | 'unknown';
 
 /**
  * Configuration and type definitions for the license risk analysis tool.

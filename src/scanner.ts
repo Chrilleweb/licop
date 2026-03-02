@@ -1,6 +1,6 @@
-import { readdir, readFile, stat } from "node:fs/promises";
-import path from "node:path";
-import type { Package } from "./config/types.js";
+import { readdir, readFile, stat } from 'node:fs/promises';
+import path from 'node:path';
+import type { Package } from './config/types.js';
 
 /**
  * Scans the current working directory's `node_modules` and returns package metadata.
@@ -12,7 +12,7 @@ import type { Package } from "./config/types.js";
  * @returns A list of discovered dependency packages with license metadata.
  */
 export async function scanDependencies(): Promise<Package[]> {
-  const nodeModulesPath = path.join(process.cwd(), "node_modules");
+  const nodeModulesPath = path.join(process.cwd(), 'node_modules');
   const packages: Package[] = [];
 
   let entries: string[];
@@ -23,7 +23,7 @@ export async function scanDependencies(): Promise<Package[]> {
   }
 
   for (const entryName of entries) {
-    if (entryName.startsWith(".")) {
+    if (entryName.startsWith('.')) {
       continue;
     }
 
@@ -34,10 +34,10 @@ export async function scanDependencies(): Promise<Package[]> {
       continue;
     }
 
-    if (entryName.startsWith("@")) {
+    if (entryName.startsWith('@')) {
       const scopedEntries = await safeReadDir(entryPath);
       for (const scopedEntry of scopedEntries) {
-        if (scopedEntry.startsWith(".")) {
+        if (scopedEntry.startsWith('.')) {
           continue;
         }
 
@@ -102,11 +102,11 @@ async function safeGetStats(filePath: string) {
 async function readPackageManifest(
   packageDir: string,
 ): Promise<Package | null> {
-  const manifestPath = path.join(packageDir, "package.json");
+  const manifestPath = path.join(packageDir, 'package.json');
 
   let raw: string;
   try {
-    raw = await readFile(manifestPath, "utf8");
+    raw = await readFile(manifestPath, 'utf8');
   } catch {
     return null;
   }
@@ -123,8 +123,8 @@ async function readPackageManifest(
   }
 
   const manifestName =
-    typeof data.name === "string" ? data.name : path.basename(packageDir);
-  const version = typeof data.version === "string" ? data.version : "unknown";
+    typeof data.name === 'string' ? data.name : path.basename(packageDir);
+  const version = typeof data.version === 'string' ? data.version : 'unknown';
   const license = normalizeLicenseField(data);
   const repository = normalizeRepositoryField(data.repository);
 
@@ -143,11 +143,11 @@ async function readPackageManifest(
  * @returns Repository URL string or `null`.
  */
 function normalizeRepositoryField(repositoryRaw: unknown): string | null {
-  if (typeof repositoryRaw === "string") {
+  if (typeof repositoryRaw === 'string') {
     return repositoryRaw;
   }
 
-  if (isRecord(repositoryRaw) && typeof repositoryRaw.url === "string") {
+  if (isRecord(repositoryRaw) && typeof repositoryRaw.url === 'string') {
     return repositoryRaw.url;
   }
 
@@ -162,21 +162,21 @@ function normalizeRepositoryField(repositoryRaw: unknown): string | null {
  */
 function normalizeLicenseField(
   manifest: Record<string, unknown>,
-): Package["license"] {
+): Package['license'] {
   const licenseRaw = manifest.license;
 
-  if (typeof licenseRaw === "string") {
+  if (typeof licenseRaw === 'string') {
     return licenseRaw;
   }
 
   if (Array.isArray(licenseRaw)) {
     const values = licenseRaw.filter(
-      (item): item is string => typeof item === "string",
+      (item): item is string => typeof item === 'string',
     );
     return values.length > 0 ? values : null;
   }
 
-  if (isRecord(licenseRaw) && typeof licenseRaw.type === "string") {
+  if (isRecord(licenseRaw) && typeof licenseRaw.type === 'string') {
     return { type: licenseRaw.type };
   }
 
@@ -184,10 +184,10 @@ function normalizeLicenseField(
   if (Array.isArray(legacyLicenses)) {
     const values = legacyLicenses
       .map((item) => {
-        if (typeof item === "string") {
+        if (typeof item === 'string') {
           return item;
         }
-        if (isRecord(item) && typeof item.type === "string") {
+        if (isRecord(item) && typeof item.type === 'string') {
           return item.type;
         }
         return null;
@@ -207,5 +207,5 @@ function normalizeLicenseField(
  * @returns `true` when value is a non-null object.
  */
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
+  return typeof value === 'object' && value !== null;
 }

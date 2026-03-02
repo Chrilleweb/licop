@@ -1,10 +1,10 @@
-import ora from "ora";
-import type { Command } from "commander";
+import ora from 'ora';
+import type { Command } from 'commander';
 
-import { parseOptions } from "../config/options.js";
-import type { RawOptions, RiskLevel } from "../config/types.js";
-import { formatCsvReport, formatJsonReport, generateReport, printReport } from "../reporter.js";
-import { scanDependencies } from "../scanner.js";
+import { parseOptions } from '../config/options.js';
+import type { RawOptions, RiskLevel } from '../config/types.js';
+import { formatCsvReport, formatJsonReport, generateReport, printReport } from '../reporter.js';
+import { scanDependencies } from '../scanner.js';
 
 /**
  * The risk level at which the CLI exits with a non-zero code.
@@ -12,7 +12,7 @@ import { scanDependencies } from "../scanner.js";
  * Typed as {@link RiskLevel} so the compiler rejects any string that is not a
  * valid risk level, avoiding magic-string drift.
  */
-const FAIL_RISK_LEVEL: RiskLevel = "danger";
+const FAIL_RISK_LEVEL: RiskLevel = 'danger';
 
 /**
  * Runs the CLI scan process and sets an appropriate process exit code.
@@ -25,7 +25,7 @@ export async function run(program: Command): Promise<void> {
   const opts = parseOptions(program.opts<RawOptions>());
 
   const spinner = ora({
-    text: "Scanning node_modules for license metadata...",
+    text: 'Scanning node_modules for license metadata...',
     isSilent: opts.json || opts.csv,
   }).start();
 
@@ -47,7 +47,7 @@ export async function run(program: Command): Promise<void> {
       process.exitCode = 1;
     }
   } catch (error) {
-    spinner.fail("License scan failed.");
+    spinner.fail('License scan failed.');
     const message = error instanceof Error ? error.message : String(error);
     console.error(message);
     process.exitCode = 1;

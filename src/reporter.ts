@@ -1,11 +1,11 @@
-import chalk from "chalk";
+import chalk from 'chalk';
 
 import type {
   GroupedReport,
   Package,
   PackageWithRisk,
-} from "./config/types.js";
-import { getRisk } from "./risk.js";
+} from './config/types.js';
+import { getRisk } from './risk.js';
 
 /**
  * Groups scanned packages by computed risk level.
@@ -67,12 +67,12 @@ export function formatCsvReport(grouped: GroupedReport): string {
       pkg.name,
       pkg.version,
       formatLicense(pkg.license),
-      pkg.repository ?? "",
+      pkg.repository ?? '',
       pkg.risk,
-    ].join(","),
+    ].join(','),
   );
 
-  return ["Package,Version,License,Repository,Risk", ...csvRows].join("\n");
+  return ['Package,Version,License,Repository,Risk', ...csvRows].join('\n');
 }
 
 /**
@@ -91,10 +91,10 @@ export function printReport(grouped: GroupedReport): void {
     ...grouped.unknown,
   ].sort((left, right) => left.name.localeCompare(right.name));
 
-  const packageHeader = "Package";
-  const versionHeader = "Version";
-  const licenseHeader = "License";
-  const riskHeader = "Risk";
+  const packageHeader = 'Package';
+  const versionHeader = 'Version';
+  const licenseHeader = 'License';
+  const riskHeader = 'Risk';
 
   const packageWidth = Math.max(
     packageHeader.length,
@@ -119,14 +119,14 @@ export function printReport(grouped: GroupedReport): void {
 
   const dividerLength =
     packageWidth + versionWidth + licenseWidth + riskWidth + 9;
-  const divider = "─".repeat(dividerLength);
+  const divider = '─'.repeat(dividerLength);
 
-  console.log(chalk.bold("\nLicense Report"));
+  console.log(chalk.bold('\nLicense Report'));
   console.log(divider);
 
   // Special case for no dependencies to avoid printing just headers and divider.
   if (rows.length === 0) {
-    console.log(chalk.green("No dependencies detected."));
+    console.log(chalk.green('No dependencies detected.'));
     console.log(divider);
     return;
   }
@@ -153,14 +153,14 @@ export function printReport(grouped: GroupedReport): void {
  * @param risk Risk level used for choosing color.
  * @returns Risk label with terminal color.
  */
-function colorRisk(text: string, risk: PackageWithRisk["risk"]): string {
-  if (risk === "safe") {
+function colorRisk(text: string, risk: PackageWithRisk['risk']): string {
+  if (risk === 'safe') {
     return chalk.green(text);
   }
-  if (risk === "warning") {
+  if (risk === 'warning') {
     return chalk.yellow(text);
   }
-  if (risk === "danger") {
+  if (risk === 'danger') {
     return chalk.red(text);
   }
   return chalk.gray(text);
@@ -172,15 +172,15 @@ function colorRisk(text: string, risk: PackageWithRisk["risk"]): string {
  * @param license Raw license value.
  * @returns Renderable license string.
  */
-function formatLicense(license: Package["license"]): string {
+function formatLicense(license: Package['license']): string {
   if (license === null) {
-    return "unknown";
+    return 'unknown';
   }
-  if (typeof license === "string") {
+  if (typeof license === 'string') {
     return license;
   }
   if (Array.isArray(license)) {
-    return license.join(", ");
+    return license.join(', ');
   }
   return license.type;
 }

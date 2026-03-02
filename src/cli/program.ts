@@ -1,4 +1,4 @@
-import { Command } from "commander";
+import { Command } from 'commander';
 
 /**
  * Creates the command-line program for licop.
@@ -6,8 +6,8 @@ import { Command } from "commander";
  */
 export function createProgram() {
   return new Command()
-    .name("licop")
-    .description("License Cop — scan your npm dependencies for risky licenses")
-    .option("--json", "Output report as JSON")
-    .option("--csv", "Output report as CSV");
+    .name('licop')
+    .description('License Cop — scan your npm dependencies for risky licenses')
+    .option('--json', 'Output report as JSON')
+    .option('--csv', 'Output report as CSV');
 }

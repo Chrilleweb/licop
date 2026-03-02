@@ -1,5 +1,5 @@
-import type { Package, RiskLevel } from "./config/types.js";
-import { SAFE_LICENSES, WARNING_LICENSES, DANGER_LICENSES } from "./config/constants.js";
+import type { Package, RiskLevel } from './config/types.js';
+import { SAFE_LICENSES, WARNING_LICENSES, DANGER_LICENSES } from './config/constants.js';
 
 /**
  * Computes a risk level from package license metadata.
@@ -17,11 +17,11 @@ import { SAFE_LICENSES, WARNING_LICENSES, DANGER_LICENSES } from "./config/const
  * @param license License metadata from a package manifest.
  * @returns The inferred risk level.
  */
-export function getRisk(license: Package["license"]): RiskLevel {
+export function getRisk(license: Package['license']): RiskLevel {
   const tokens = normalizeLicenseTokens(license);
 
   if (tokens.length === 0) {
-    return "unknown";
+    return 'unknown';
   }
 
   let hasSafe = false;
@@ -29,27 +29,27 @@ export function getRisk(license: Package["license"]): RiskLevel {
 
   for (const token of tokens) {
     const risk = classifyToken(token);
-    if (risk === "danger") {
-      return "danger";
+    if (risk === 'danger') {
+      return 'danger';
     }
-    if (risk === "warning") {
+    if (risk === 'warning') {
       hasWarning = true;
       continue;
     }
-    if (risk === "safe") {
+    if (risk === 'safe') {
       hasSafe = true;
     }
   }
 
   if (hasWarning) {
-    return "warning";
+    return 'warning';
   }
 
   if (hasSafe) {
-    return "safe";
+    return 'safe';
   }
 
-  return "unknown";
+  return 'unknown';
 }
 
 /**
@@ -58,31 +58,31 @@ export function getRisk(license: Package["license"]): RiskLevel {
  * @param license Raw license metadata.
  * @returns Uppercase SPDX-like tokens without operators.
  */
-function normalizeLicenseTokens(license: Package["license"]): string[] {
+function normalizeLicenseTokens(license: Package['license']): string[] {
   if (license === null) {
     return [];
   }
 
   const rawValues: string[] = [];
 
-  if (typeof license === "string") {
+  if (typeof license === 'string') {
     rawValues.push(license);
   } else if (Array.isArray(license)) {
     for (const entry of license) {
-      if (typeof entry === "string") {
+      if (typeof entry === 'string') {
         rawValues.push(entry);
       }
     }
-  } else if (typeof license === "object" && typeof license.type === "string") {
+  } else if (typeof license === 'object' && typeof license.type === 'string') {
     rawValues.push(license.type);
   }
 
   const tokens: string[] = [];
   for (const value of rawValues) {
     const normalized = value
-      .replace(/[()]/g, " ")
-      .replace(/\s+(OR|AND|WITH)\s+/gi, " ")
-      .replace(/[|/,&+]/g, " ")
+      .replace(/[()]/g, ' ')
+      .replace(/\s+(OR|AND|WITH)\s+/gi, ' ')
+      .replace(/[|/,&+]/g, ' ')
       .split(/\s+/)
       .map((token) => token.trim())
       .filter((token) => token.length > 0);
@@ -105,18 +105,18 @@ function classifyToken(token: string): RiskLevel {
   const normalized = normalizeLicenseIdentifier(token);
 
   if (matchesAny(normalized, DANGER_LICENSES)) {
-    return "danger";
+    return 'danger';
   }
 
   if (matchesAny(normalized, WARNING_LICENSES)) {
-    return "warning";
+    return 'warning';
   }
 
   if (matchesAny(normalized, SAFE_LICENSES)) {
-    return "safe";
+    return 'safe';
   }
 
-  return "unknown";
+  return 'unknown';
 }
 
 /**
@@ -128,8 +128,8 @@ function classifyToken(token: string): RiskLevel {
 function normalizeLicenseIdentifier(identifier: string): string {
   return identifier
     .toUpperCase()
-    .replace(/\+$/, "")
-    .replace(/-(ONLY|OR-LATER)$/, "");
+    .replace(/\+$/, '')
+    .replace(/-(ONLY|OR-LATER)$/, '');
 }
 
 /**
