@@ -1,6 +1,5 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
-
 import type { Package } from "./config/types.js";
 
 /**
