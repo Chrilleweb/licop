@@ -1,6 +1,10 @@
 import chalk from "chalk";
 
-import type { GroupedReport, Package, PackageWithRisk } from "./config/types.js";
+import type {
+  GroupedReport,
+  Package,
+  PackageWithRisk,
+} from "./config/types.js";
 import { getRisk } from "./risk.js";
 
 /**
@@ -58,13 +62,15 @@ export function formatCsvReport(grouped: GroupedReport): string {
     ...grouped.unknown,
   ].sort((left, right) => left.name.localeCompare(right.name));
 
-  const csvRows = rows.map((pkg) => [
-    pkg.name,
-    pkg.version,
-    formatLicense(pkg.license),
-    pkg.repository ?? "",
-    pkg.risk,
-  ].join(","));
+  const csvRows = rows.map((pkg) =>
+    [
+      pkg.name,
+      pkg.version,
+      formatLicense(pkg.license),
+      pkg.repository ?? "",
+      pkg.risk,
+    ].join(","),
+  );
 
   return ["Package,Version,License,Repository,Risk", ...csvRows].join("\n");
 }
@@ -117,6 +123,14 @@ export function printReport(grouped: GroupedReport): void {
 
   console.log(chalk.bold("\nLicense Report"));
   console.log(divider);
+
+  // Special case for no dependencies to avoid printing just headers and divider.
+  if (rows.length === 0) {
+    console.log(chalk.green("No dependencies detected."));
+    console.log(divider);
+    return;
+  }
+
   console.log(
     `${packageHeader.padEnd(packageWidth)}  ${versionHeader.padEnd(versionWidth)}  ${licenseHeader.padEnd(licenseWidth)}  ${riskHeader.padEnd(riskWidth)}`,
   );
