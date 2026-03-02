@@ -1,4 +1,4 @@
-# licop
+# licop - License Checker for npm Projects
 
 > A modern CLI for auditing dependency licenses and enforcing license risk in CI.
 
@@ -31,16 +31,7 @@ npx licop
 
 licop prints a clear terminal table like this:
 
-```text
-License Report
-────────────────────────────────────────────────────────
-Package            Version   License         Risk
-────────────────────────────────────────────────────────
-chalk              5.3.0     MIT             safe
-typescript         5.4.2     Apache-2.0      safe
-lodash             4.17.21   MIT             safe
-────────────────────────────────────────────────────────
-```
+![License Risk Report](./docs/screenshots/license-report.png)
 
 ### with `--json`
 
