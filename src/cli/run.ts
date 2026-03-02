@@ -1,6 +1,5 @@
 import ora from 'ora';
 import type { Command } from 'commander';
-
 import { parseOptions } from '../config/options.js';
 import type { RawOptions, RiskLevel } from '../config/types.js';
 import { formatCsvReport, formatJsonReport, generateReport, printReport } from '../reporter.js';

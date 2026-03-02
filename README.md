@@ -97,6 +97,12 @@ Legal review recommended before production use.
 - LGPL-3.0
 - MPL-2.0
 - EPL-2.0
+- GPL-2.0-only
+- GPL-3.0-only
+- AGPL-3.0-only
+- GPL-2.0-or-later
+- GPL-3.0-or-later
+- AGPL-3.0-or-later
 
 ### danger
 
@@ -107,6 +113,10 @@ May require open-sourcing your entire project if you distribute it.
 - GPL-3.0
 - AGPL-3.0
 - SSPL-1.0
+- LGPL-2.1-only
+- LGPL-3.0-only
+- LGPL-2.1-or-later
+- LGPL-3.0-or-later
 
 ### unknown
 
