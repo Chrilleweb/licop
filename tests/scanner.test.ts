@@ -11,7 +11,9 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import { scanDependencies } from "../src/scanner.js";
 
 const mockDir = (isDir: boolean) =>
-  Promise.resolve({ isDirectory: () => isDir } as Awaited<ReturnType<typeof stat>>);
+  Promise.resolve({ isDirectory: () => isDir } as Awaited<
+    ReturnType<typeof stat>
+  >);
 
 function pkg(overrides: Record<string, unknown> = {}): string {
   return JSON.stringify({
@@ -59,7 +61,11 @@ describe("scanDependencies", () => {
     const result = await scanDependencies();
 
     expect(result).toHaveLength(1);
-    expect(result[0]).toMatchObject({ name: "chalk", version: "5.3.0", license: "MIT" });
+    expect(result[0]).toMatchObject({
+      name: "chalk",
+      version: "5.3.0",
+      license: "MIT",
+    });
   });
 
   it("reads a scoped package (@scope/name)", async () => {
@@ -83,7 +89,11 @@ describe("scanDependencies", () => {
       .mockResolvedValueOnce([".cache", "real-pkg"] as never);
     vi.mocked(stat).mockResolvedValue(mockDir(true) as never);
     vi.mocked(readFile).mockResolvedValue(
-      pkg({ name: "@scope/real-pkg", version: "1.0.0", license: "MIT" }) as never,
+      pkg({
+        name: "@scope/real-pkg",
+        version: "1.0.0",
+        license: "MIT",
+      }) as never,
     );
 
     const result = await scanDependencies();
@@ -97,7 +107,7 @@ describe("scanDependencies", () => {
       .mockResolvedValueOnce(["@scope"] as never)
       .mockResolvedValueOnce(["not-a-dir"] as never);
     vi.mocked(stat)
-      .mockResolvedValueOnce(mockDir(true) as never)  // @scope itself
+      .mockResolvedValueOnce(mockDir(true) as never) // @scope itself
       .mockResolvedValueOnce(mockDir(false) as never); // not-a-dir
 
     const result = await scanDependencies();
@@ -111,6 +121,23 @@ describe("scanDependencies", () => {
     vi.mocked(readFile).mockRejectedValue(new Error("ENOENT"));
 
     expect(await scanDependencies()).toEqual([]);
+  });
+
+  it("does not push scoped package when manifest returns null", async () => {
+    vi.mocked(readdir)
+      .mockResolvedValueOnce(["@scope"] as never) // node_modules
+      .mockResolvedValueOnce(["pkg"] as never); // inside @scope
+
+    vi.mocked(stat)
+      .mockResolvedValueOnce(mockDir(true) as never) // @scope
+      .mockResolvedValueOnce(mockDir(true) as never); // pkg
+
+    // readFile fails → readPackageManifest returns null
+    vi.mocked(readFile).mockRejectedValue(new Error("ENOENT"));
+
+    const result = await scanDependencies();
+
+    expect(result).toEqual([]);
   });
 
   it("skips package when package.json contains invalid JSON", async () => {
@@ -179,7 +206,11 @@ describe("scanDependencies", () => {
     vi.mocked(readdir).mockResolvedValue(["pkg"] as never);
     vi.mocked(stat).mockResolvedValue(mockDir(true) as never);
     vi.mocked(readFile).mockResolvedValue(
-      JSON.stringify({ name: "pkg", version: "1.0.0", license: "MIT" }) as never,
+      JSON.stringify({
+        name: "pkg",
+        version: "1.0.0",
+        license: "MIT",
+      }) as never,
     );
 
     const result = await scanDependencies();
@@ -205,7 +236,11 @@ describe("scanDependencies", () => {
     vi.mocked(readdir).mockResolvedValue(["pkg"] as never);
     vi.mocked(stat).mockResolvedValue(mockDir(true) as never);
     vi.mocked(readFile).mockResolvedValue(
-      JSON.stringify({ name: "pkg", version: "1.0.0", license: { type: "MIT" } }) as never,
+      JSON.stringify({
+        name: "pkg",
+        version: "1.0.0",
+        license: { type: "MIT" },
+      }) as never,
     );
 
     const result = await scanDependencies();
@@ -227,7 +262,11 @@ describe("scanDependencies", () => {
     vi.mocked(readdir).mockResolvedValue(["pkg"] as never);
     vi.mocked(stat).mockResolvedValue(mockDir(true) as never);
     vi.mocked(readFile).mockResolvedValue(
-      JSON.stringify({ name: "pkg", version: "1.0.0", licenses: ["MIT"] }) as never,
+      JSON.stringify({
+        name: "pkg",
+        version: "1.0.0",
+        licenses: ["MIT"],
+      }) as never,
     );
 
     const result = await scanDependencies();
@@ -265,9 +304,23 @@ describe("scanDependencies", () => {
     vi.mocked(stat).mockResolvedValue(mockDir(true) as never);
     vi.mocked(readFile).mockImplementation(async (filePath) => {
       const p = String(filePath);
-      if (p.includes("zlib")) return JSON.stringify({ name: "zlib", version: "1.0.0", license: "MIT" }) as never;
-      if (p.includes("acorn")) return JSON.stringify({ name: "acorn", version: "1.0.0", license: "MIT" }) as never;
-      return JSON.stringify({ name: "chalk", version: "1.0.0", license: "MIT" }) as never;
+      if (p.includes("zlib"))
+        return JSON.stringify({
+          name: "zlib",
+          version: "1.0.0",
+          license: "MIT",
+        }) as never;
+      if (p.includes("acorn"))
+        return JSON.stringify({
+          name: "acorn",
+          version: "1.0.0",
+          license: "MIT",
+        }) as never;
+      return JSON.stringify({
+        name: "chalk",
+        version: "1.0.0",
+        license: "MIT",
+      }) as never;
     });
 
     const result = await scanDependencies();
