@@ -50,4 +50,63 @@ describe("getRisk", () => {
     expect(getRisk(null)).toBe("unknown");
     expect(getRisk("UNLICENSED")).toBe("unknown");
   });
+
+  it("strips + suffix before classification (MIT+ → safe, GPL-3.0+ → danger)", () => {
+    expect(getRisk("MIT+")).toBe("safe");
+    expect(getRisk("GPL-3.0+")).toBe("danger");
+    expect(getRisk("LGPL-2.1+")).toBe("warning");
+  });
+
+  it("strips -OR-LATER suffix before classification", () => {
+    expect(getRisk("GPL-3.0-OR-LATER")).toBe("danger");
+    expect(getRisk("LGPL-2.1-OR-LATER")).toBe("warning");
+  });
+
+  it("supports slash-separated license strings", () => {
+    expect(getRisk("MIT/Apache-2.0")).toBe("safe");
+    expect(getRisk("GPL-3.0/MIT")).toBe("danger");
+  });
+
+  it("supports pipe-separated license strings", () => {
+    expect(getRisk("MIT|ISC")).toBe("safe");
+    expect(getRisk("GPL-2.0|MIT")).toBe("danger");
+  });
+
+  it("supports comma-separated license strings", () => {
+    expect(getRisk("MIT, Apache-2.0")).toBe("safe");
+    expect(getRisk("GPL-3.0, MIT")).toBe("danger");
+  });
+
+  it("supports object license with danger type", () => {
+    expect(getRisk({ type: "GPL-3.0" })).toBe("danger");
+  });
+
+  it("supports object license with warning type", () => {
+    expect(getRisk({ type: "LGPL-3.0" })).toBe("warning");
+  });
+
+  it("danger takes priority over safe in array", () => {
+    expect(getRisk(["MIT", "GPL-3.0"])).toBe("danger");
+  });
+
+  it("warning takes priority over safe in array", () => {
+    expect(getRisk(["MIT", "LGPL-2.1"])).toBe("warning");
+  });
+
+  it("danger takes priority over warning in array", () => {
+    expect(getRisk(["LGPL-3.0", "GPL-2.0"])).toBe("danger");
+  });
+
+  it("returns unknown for empty string array", () => {
+    expect(getRisk([])).toBe("unknown");
+  });
+
+  it("returns unknown for unrecognised license string", () => {
+    expect(getRisk("PROPRIETARY")).toBe("unknown");
+    expect(getRisk("SEE LICENSE IN LICENSE.md")).toBe("unknown");
+  });
+
+  it("handles SPDX AND expressions (both safe → safe)", () => {
+    expect(getRisk("MIT AND Apache-2.0")).toBe("safe");
+  });
 });
