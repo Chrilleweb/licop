@@ -24,7 +24,10 @@ export async function run(program: Command): Promise<void> {
   program.parse();
   const opts = parseOptions(program.opts<RawOptions>());
 
-  const spinner = ora("Scanning node_modules for license metadata...").start();
+  const spinner = ora({
+    text: "Scanning node_modules for license metadata...",
+    isSilent: opts.json,
+  }).start();
 
   try {
     const packages = await scanDependencies();
