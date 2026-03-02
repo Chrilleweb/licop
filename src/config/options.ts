@@ -7,8 +7,10 @@ import type { RawOptions } from "./types.js";
  */
 export function parseOptions(args: Partial<RawOptions>): RawOptions {
   const json = toBool(args.json ?? false);
+  const csv = toBool(args.csv ?? false);
   return {
     json,
+    csv,
   };
 }
 

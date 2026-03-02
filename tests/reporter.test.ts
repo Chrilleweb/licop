@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { Package } from "../src/config/types.js";
-import { generateReport, formatJsonReport, printReport } from "../src/reporter.js";
+import { generateReport, formatJsonReport, formatCsvReport, printReport } from "../src/reporter.js";
 
 describe("generateReport", () => {
   it("returns an empty grouped report when no packages given", () => {
@@ -252,5 +252,13 @@ describe("formatJsonReport", () => {
     const grouped = generateReport([]);
     const json = formatJsonReport(grouped);
     expect(json).toContain("\n  ");
+  });
+});
+
+describe("formatCsvReport", () => {
+  it("returns a CSV string with headers", () => {
+    const grouped = generateReport([]);
+    const csv = formatCsvReport(grouped);
+    expect(csv).toContain("Package,Version,License,Risk");
   });
 });

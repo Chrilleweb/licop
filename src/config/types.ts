@@ -8,6 +8,7 @@ export type RiskLevel = "safe" | "warning" | "danger" | "unknown";
  */
 export interface RawOptions {
   json: boolean;
+  csv: boolean;
 }
 
 /**

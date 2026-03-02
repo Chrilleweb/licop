@@ -43,6 +43,33 @@ export function formatJsonReport(grouped: GroupedReport): string {
 }
 
 /**
+ * Serializes the grouped report to CSV format.
+ *
+ * The CSV includes all packages sorted alphabetically by name, with columns for
+ * package name, version, formatted license, and risk level.
+ * @param grouped Grouped risk report from {@link generateReport}.
+ * @returns CSV string ready for `console.log` or file output.
+ */
+export function formatCsvReport(grouped: GroupedReport): string {
+  const rows = [
+    ...grouped.safe,
+    ...grouped.warning,
+    ...grouped.danger,
+    ...grouped.unknown,
+  ].sort((left, right) => left.name.localeCompare(right.name));
+
+  const csvRows = rows.map((pkg) => [
+    pkg.name,
+    pkg.version,
+    formatLicense(pkg.license),
+    pkg.repository ?? "",
+    pkg.risk,
+  ].join(","));
+
+  return ["Package,Version,License,Repository,Risk", ...csvRows].join("\n");
+}
+
+/**
  * Prints a color-coded license table report to standard output.
  *
  * The report includes all scanned packages in a compact tabular layout with

@@ -72,6 +72,9 @@ lodash             4.17.21   MIT             safe
 
 This will output the table in json format and also include the repository of the package if it exists. 
 
+### `--csv`
+
+This will output the table in csv format and also include the repository of the package if it exists.
 
 ## Output and CI Behavior
 

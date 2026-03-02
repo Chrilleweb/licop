@@ -3,7 +3,7 @@ import type { Command } from "commander";
 
 import { parseOptions } from "../config/options.js";
 import type { RawOptions, RiskLevel } from "../config/types.js";
-import { formatJsonReport, generateReport, printReport } from "../reporter.js";
+import { formatCsvReport, formatJsonReport, generateReport, printReport } from "../reporter.js";
 import { scanDependencies } from "../scanner.js";
 
 /**
@@ -26,7 +26,7 @@ export async function run(program: Command): Promise<void> {
 
   const spinner = ora({
     text: "Scanning node_modules for license metadata...",
-    isSilent: opts.json,
+    isSilent: opts.json || opts.csv,
   }).start();
 
   try {
@@ -37,6 +37,8 @@ export async function run(program: Command): Promise<void> {
 
     if (opts.json) {
       console.log(formatJsonReport(grouped));
+    } else if (opts.csv) {
+      console.log(formatCsvReport(grouped));
     } else {
       printReport(grouped);
     }
