@@ -64,14 +64,14 @@
     "pnpm": ">=9.0.0"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^10.0.5",
+    "@release-it/conventional-changelog": "^11.0.0",
     "@types/node": "^25.3.3",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
     "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^10.0.3",
-    "release-it": "^19.2.4",
-    "typescript": "^5.9.3",
+    "release-it": "^20.0.1",
+    "typescript": "^6.0.3",
     "vitest": "^4.0.18"
   },
   "dependencies": {
